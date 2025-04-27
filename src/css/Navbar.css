@@ -1,9 +1,9 @@
 .navbar {
-    background-color: #0c607e;
     padding: 10px;
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 999;
+    left: 0;
+    z-index: 2000;
 }
 
 .menu-icon {
@@ -14,8 +14,14 @@
 
 .menu {
     list-style: none;
-    padding: 0;
+    padding: 10;
     display: none;
+    margin: 0;
+    background-color: #6dd5ed;
+    margin-top: 15px;
+    width: 200px;
+    text-align: left;
+
 }
 
 .menu.active {
@@ -24,10 +30,12 @@
 
 .menu li {
     margin: 10px 0;
+    left: 0;
 }
 
 .menu li a {
     text-decoration: none;
-    color: white;
+    color: whitesmoke;
     font-size: 18px;
+
 }

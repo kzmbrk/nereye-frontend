@@ -1,11 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 function CompanyPage() {
     return (
         <div>
-            <div>
-                <p>Berat Page</p>
-            </div>
+            <header className="header">
+                <Link style={{ color: 'white' }} to="/" >
+                    <h2>Nereye</h2>
+                </Link>
+            </header>
         </div>
     )
 }

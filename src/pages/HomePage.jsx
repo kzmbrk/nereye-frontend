@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/HomePage.css';
 
 const HomePage = () => {
@@ -87,9 +88,10 @@ const HomePage = () => {
     return (
         <>
             <header className="header">
-                <h1>Nereye</h1>
+                <Link style={{ color: 'white' }} to="/" >
+                    <h1>Nereye</h1>
+                </Link>
             </header>
-
             <div className="home-page">
                 <div className="search-container">
                     <h3>Seyahat Planınızı Seçin</h3>
