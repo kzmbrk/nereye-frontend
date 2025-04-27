@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './HomePage.css';
+import '../css/HomePage.css';
 
 const HomePage = () => {
     const [departureDate, setDepartureDate] = useState('');
@@ -48,7 +48,7 @@ const HomePage = () => {
                 departureDate: formattedDate
             });
 
-            const response = await fetch(`http://localhost:8081/api/travel/GetTravelWithCompanyDto?${searchParams}`, {
+            const response = await fetch(`http://localhost:59701/api/travel/GetTravelWithCompanyDto?${searchParams}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

@@ -1,7 +1,6 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
-
-import './LoginPage.css';
+import '../css/LoginPage.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
