@@ -4,7 +4,7 @@ function CompanyPage() {
     return (
         <div>
             <div>
-                <p>Company Page</p>
+                <p>Berat Page</p>
             </div>
         </div>
     )

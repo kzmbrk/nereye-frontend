@@ -1,0 +1,33 @@
+.navbar {
+    background-color: #0c607e;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.menu-icon {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    display: none;
+}
+
+.menu.active {
+    display: block;
+}
+
+.menu li {
+    margin: 10px 0;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}

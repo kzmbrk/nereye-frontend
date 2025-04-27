@@ -4,10 +4,12 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import TravelPage from './pages/TravelPage';
 import CompanyPage from './pages/CompanyPage';
+import Navbar from './components/Navbar'; // Navbar'ı ekledik
 
 const App = () => {
   return (
     <Router>
+      <Navbar /> {/* Navbar'ı Routes'ın üstüne koyduk */}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
