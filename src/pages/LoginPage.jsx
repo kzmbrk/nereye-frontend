@@ -1,22 +1,93 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import '../css/LoginPage.css';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [isRegister, setIsRegister] = useState(false);
 
-    const handleLogin = (e) => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [gender, setGender] = useState(true); // true = erkek, false = kadın
+
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const backendUrl = 'http://localhost:8081';
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Email:', email, 'Password:', password);
-        // Backend API entegrasyonu burada yapılacak
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await fetch(`${backendUrl}/authenticate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const contentType = response.headers.get('content-type');
+
+            if (!response.ok) {
+                if (contentType && contentType.includes('application/json')) {
+                    const errData = await response.json();
+                    throw new Error(errData.message || 'Giriş başarısız');
+                } else {
+                    throw new Error('Giriş başarısız.');
+                }
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            alert('Giriş başarılı!');
+            window.location.href = 'http://localhost:5173/home';
+        } catch (err) {
+            setError(err.message || 'Bilinmeyen bir hata oluştu.');
+        } finally {
+            setLoading(false);
+        }
     };
-    console.log("saa")
-    const handleRegister = (e) => {
+
+
+    const handleRegister = async (e) => {
         e.preventDefault();
-        console.log('Register Email:', email, 'Password:', password);
-        // Backend API entegrasyonu burada yapılacak
+        setLoading(true);
+        setError('');
+        try {
+            const response = await fetch(`${backendUrl}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    gender, // ✅ erkek = true, kadın = false
+                }),
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.message || 'Kayıt başarısız');
+            }
+
+            const data = await response.json();
+            alert('Kayıt başarılı! Giriş yapabilirsiniz.');
+            setIsRegister(false);
+            setFirstName('');
+            setLastName('');
+            setEmail('');
+            setPassword('');
+            setGender(true);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -28,34 +99,41 @@ const LoginPage = () => {
                 <div className="switch-box">
                     <button
                         className={!isRegister ? 'active' : ''}
-                        onClick={() => setIsRegister(false)}
+                        onClick={() => {
+                            setIsRegister(false);
+                            setError('');
+                        }}
                     >
                         Giriş Yap
                     </button>
                     <button
                         className={isRegister ? 'active' : ''}
-                        onClick={() => setIsRegister(true)}
+                        onClick={() => {
+                            setIsRegister(true);
+                            setError('');
+                        }}
                     >
                         Kayıt Ol
                     </button>
                 </div>
+
                 {isRegister ? (
                     <>
                         <h3>Bir Hesap Oluşturun</h3>
-                        <p>Please fill in the details to register</p>
+                        <p>Lütfen bilgileri doldurun</p>
                         <form onSubmit={handleRegister} className="login-form">
                             <input
                                 type="text"
                                 placeholder="Ad"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                                 required
                             />
                             <input
                                 type="text"
                                 placeholder="Soyad"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 required
                             />
                             <input
@@ -67,18 +145,36 @@ const LoginPage = () => {
                             />
                             <input
                                 type="password"
-                                placeholder="Password"
+                                placeholder="Şifre"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                            <button type="submit">Kayıt Ol</button>
+
+                            <div style={{ margin: '10px 0' }}>
+                                <div className="gender-toggle">
+                                    <span className={!gender ? 'inactive' : ''}>Erkek</span>
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={gender}
+                                            onChange={() => setGender(!gender)}
+                                        />
+                                        <span className="slider round"></span>
+                                    </label>
+                                    <span className={gender ? 'inactive' : ''}>Kadın</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Kayıt Olunuyor...' : 'Kayıt Ol'}
+                            </button>
                         </form>
                     </>
                 ) : (
                     <>
                         <h1>Hoşgeldiniz</h1>
-                        <p>Please login to continue</p>
+                        <p>Lütfen giriş yapın</p>
                         <form onSubmit={handleLogin} className="login-form">
                             <input
                                 type="email"
@@ -89,22 +185,34 @@ const LoginPage = () => {
                             />
                             <input
                                 type="password"
-                                placeholder="Password"
+                                placeholder="Şifre"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                            <button type="submit">Giriş Yap</button>
-                        </form>
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
+                            </button>
+                            <p>
+                                <Link to="/forgot-password" className="forgot-password-link">
+                                    Şifremi Unuttum
+                                </Link>
+                            </p>                        </form>
                     </>
                 )}
+                {error && <p style={{ color: 'black' }}>{error}</p>}
             </div>
             <footer className="footer">
                 <p>© 2025 Nereye. Tüm hakları saklıdır.</p>
+                <p
+                    className="link-text"
+                    onClick={() => navigate('/company-create')}
+                >
+                    Bizimle Çalışmak İster misiniz?
+                </p>
             </footer>
         </div>
     );
-
 };
 
 export default LoginPage;
