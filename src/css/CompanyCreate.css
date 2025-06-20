@@ -12,72 +12,63 @@
     --color-botticelli-950: #052225;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .company-create-page {
     text-align: center;
-    margin-top: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--color-botticelli-900);
     min-height: 100vh;
     background: linear-gradient(to bottom, var(--color-botticelli-200), var(--color-botticelli-500));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 50px;
+    padding: 100px 20px 60px;
+    color: var(--color-botticelli-900);
 }
 
 .company-create-container {
     background: var(--color-botticelli-50);
-    border-radius: 10px;
-    padding: 30px 25px;
+    border-radius: 12px;
+    padding: 35px 28px;
     width: 320px;
-    box-shadow: 0 8px 20px rgba(33, 147, 176, 0.15);
-    margin-left: 0;
+    max-width: 90%;
+    box-shadow: 0 8px 20px rgba(33, 147, 176, 0.2);
 }
 
 .company-form input,
 .company-form select {
-    width: 90%;
+    width: 100%;
     padding: 12px 15px;
+    margin-bottom: 16px;
     border: 1.5px solid var(--color-botticelli-300);
     border-radius: 8px;
     font-size: 15px;
     color: var(--color-botticelli-800);
-    outline-offset: 2px;
-    transition: border-color 0.3s ease;
     background-color: white;
-    appearance: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
-    /* Padding ve border genişliğe dahil olsun */
-    font-family: inherit;
-    /* Aynı font kullansın */
-    /* Dropdown ok için sağa biraz padding ekle */
-    padding-right: 40px;
-    position: relative;
-}
-
-/* Select için özel ok eklemek ve daha tutarlı görünmesini sağlamak için */
-.company-form select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'6'%20viewBox%3D'0%200%2010%206'%20xmlns%3D'http://www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%206%205-6z'%20fill%3D'%232193b0'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 10px 6px;
 }
 
-/* Focus durumunda border */
+/* Remove the dropdown arrow that might appear as blue line */
+.company-form select {
+    background-image: none;
+}
+
 .company-form input:focus,
 .company-form select:focus {
     border-color: var(--color-botticelli-500);
-    box-shadow: 0 0 6px var(--color-botticelli-300);
+    box-shadow: 0 0 6px var(--color-botticelli-200);
+    outline: none;
 }
 
-
 .company-form button {
-    margin-top: 10px;
-    width: 90%;
+    width: 100%;
     padding: 12px;
     background-color: var(--color-botticelli-500);
     border: none;
@@ -101,6 +92,7 @@
 .error-text {
     color: red;
     margin-top: 10px;
+    font-size: 14px;
 }
 
 .header {
@@ -109,24 +101,24 @@
     height: 50px;
     width: 100%;
     padding: 10px 20px;
-    background: rgba(255 255 255 / 0.15);
+    background: rgba(255, 255, 255, 0.15);
     color: var(--color-botticelli-700);
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0 0 0 / 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: medium;
     z-index: 1000;
 }
 
 .footer {
     position: absolute;
-    bottom: -1%;
+    bottom: 0;
     height: 35px;
     width: 100%;
     padding: 0 20px;
-    background: rgba(255 255 255 / 0.15);
-    color: rgba(255 255 255 / 0.8);
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    box-shadow: 0 -4px 10px rgba(0 0 0 / 0.1);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
     z-index: 1000;
     display: flex;

@@ -24,12 +24,8 @@ function ResetPassword() {
         }
 
         try {
-            await axios.post('/reset-password', null, {
-                params: {
-                    token: token,
-                    newPassword: password
-                }
-            });
+            await axios.post('http://localhost:8081/reset-password', { token, newPassword: password });
+
             setMessage('Şifreniz başarıyla güncellendi.');
         } catch (err) {
             setError(err.response?.data || 'Bir hata oluştu.');

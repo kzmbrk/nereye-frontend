@@ -8,32 +8,42 @@ const CompanyCreate = () => {
     const [companyType, setCompanyType] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [photo, setPhoto] = useState(null);
-    const [photoPreview, setPhotoPreview] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setSuccessMessage('');
         setLoading(true);
 
-        // Burada API çağrısı yapılabilir
-        setTimeout(() => {
-            alert('Nereye Ailesine Hoş Geldiniz');
-            setLoading(false);
+        try {
+            const response = await fetch('http://localhost:8081/api/company/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    taxNumber,
+                    email,
+                    companyType
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Şirket kaydedilemedi.');
+            }
+
+            setSuccessMessage('Nereye Ailesine Hoş Geldiniz!');
             setName('');
             setTaxNumber('');
             setEmail('');
             setCompanyType('');
-        }, 1500);
-    };
-    const handlePhotoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setPhoto(file);
-            setPhotoPreview(URL.createObjectURL(file));
-        } else {
-            setPhoto(null);
-            setPhotoPreview(null);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -75,23 +85,11 @@ const CompanyCreate = () => {
                         <option value="AIRLINE">Havayolu</option>
                         <option value="TRAIN">Tren</option>
                     </select>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handlePhotoChange}
-                    />
-                    {photoPreview && (
-                        <img
-                            src={photoPreview}
-                            alt="Seçilen Fotoğraf"
-                            style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '15px', borderRadius: '8px' }}
-                        />
-                    )}
-
                     <button type="submit" disabled={loading}>
                         {loading ? 'Oluşturuluyor...' : 'Başlayalım'}
                     </button>
                     {error && <p className="error-text">{error}</p>}
+                    {successMessage && <p className="success-text">{successMessage}</p>}
                 </form>
             </div>
             <footer className="footer">

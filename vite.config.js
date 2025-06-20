@@ -1,14 +1,24 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
-      '/forgot-password': 'http://localhost:8081',
-      '/reset-password': 'http://localhost:8081',
-      '/authenticate': 'http://localhost:8081',
-      '/register': 'http://localhost:8081',
-    }
-  }
-})
+    port: 5173,
+    open: true,
+    fs: {
+      strict: false,
+    },
+    // 👇👇👇 Bu kısım önemli: SPA fallback
+    historyApiFallback: true
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  build: {
+    outDir: 'dist',
+  },
+});
