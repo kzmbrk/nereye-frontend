@@ -7,7 +7,7 @@ const Navbar = () => {
     const menuRef = useRef(null);
 
     const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
+        setMenuOpen((prev) => !prev);
     };
 
     useEffect(() => {
@@ -17,17 +17,12 @@ const Navbar = () => {
             }
         };
 
-        if (menuOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
+        document.addEventListener('mousedown', handleClickOutside);
 
-        // Cleanup
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [menuOpen]);
+    }, []);
 
     return (
         <nav className="navbar" ref={menuRef}>
@@ -39,6 +34,8 @@ const Navbar = () => {
                 <li><Link to="/travel" onClick={toggleMenu}>Seyahat</Link></li>
                 <li><Link to="/home" onClick={toggleMenu}>Seyahat Ara</Link></li>
                 <li><Link to="/company" onClick={toggleMenu}>Şirket</Link></li>
+                <li><Link to="/travels" onClick={toggleMenu}>Seyahatlerim</Link></li>
+                <li><Link to="/cards" onClick={toggleMenu}>Kartlarım</Link></li>
             </ul>
         </nav>
     );

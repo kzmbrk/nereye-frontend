@@ -1,0 +1,111 @@
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 50px;
+    margin-top: 1700px;
+    /* navbar altı boşluk */
+}
+
+/* Kart ve buton yan yana */
+.card-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Kart ile buton arası boşluk */
+}
+
+/* Kartın kendi stili aynı kalacak */
+.card-wrapper {
+    position: relative;
+    width: 320px;
+    height: 190px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(9, 43, 58, 0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-botticelli-50);
+
+    background: rgba(33, 147, 176, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1.5px solid rgba(33, 147, 176, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-wrapper:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(13, 62, 85, 0.6);
+}
+
+.card-bg {
+    display: none;
+}
+
+.card-logo {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 60px;
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.card-description {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    max-width: 70%;
+    color: var(--color-botticelli-50);
+}
+
+.card-number {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 2;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+    font-size: 18px;
+    color: var(--color-botticelli-50);
+}
+
+.card-expiry {
+    position: absolute;
+    bottom: 25px;
+    left: 20px;
+    font-weight: 600;
+    z-index: 2;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    color: var(--color-botticelli-100);
+}
+
+/* Buton stili */
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 40px;
+    /* Kart yüksekliği ile uyumlu olabilir */
+    align-self: center;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
