@@ -1,0 +1,132 @@
+:root {
+    --color-botticelli-50: #f3f8fc;
+    --color-botticelli-100: #e6f1f8;
+    --color-botticelli-200: #c6e2ef;
+    --color-botticelli-300: #97cce2;
+    --color-botticelli-400: #5fb1d1;
+    --color-botticelli-500: #2193b0;
+    --color-botticelli-600: #1b7a91;
+    --color-botticelli-700: #146273;
+    --color-botticelli-800: #0f4c56;
+    --color-botticelli-900: #0a3841;
+    --color-botticelli-950: #052225;
+}
+
+.seat-selector-container {
+    position: fixed;
+    top: 50px;
+    left: 10%;
+    right: 10%;
+    background-color: var(--color-botticelli-50);
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 9999;
+    box-shadow: 0 6px 20px rgba(33, 147, 176, 0.3);
+    overflow-x: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.seat-selector-close-btn {
+    float: right;
+    background-color: var(--color-botticelli-500);
+    border: none;
+    color: var(--color-botticelli-50);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(33, 147, 176, 0.5);
+}
+
+.seat-selector-close-btn:hover {
+    background-color: var(--color-botticelli-600);
+}
+
+.seat-selector-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-botticelli-800);
+    user-select: none;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.seat-matrix {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.seat-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.seat {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 8px;
+    background-color: var(--color-botticelli-100);
+    box-shadow: 0 2px 5px rgba(33, 147, 176, 0.2);
+    user-select: none;
+}
+
+.seat img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.seat:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 14px rgba(33, 147, 176, 0.5);
+    z-index: 10;
+}
+
+.status-indicator {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--color-botticelli-50);
+}
+
+.status-booked {
+    background-color: #e74c3c;
+    box-shadow: 0 0 6px #e74c3c;
+}
+
+.status-available {
+    background-color: var(--color-botticelli-400);
+    box-shadow: 0 0 6px var(--color-botticelli-400);
+}
+
+.seat-number {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-botticelli-700);
+    user-select: none;
+    pointer-events: none;
+}
+
+.empty-seat {
+    width: 44px;
+    height: 44px;
+    margin: 4px;
+    background: transparent;
+}

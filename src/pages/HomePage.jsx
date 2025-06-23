@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/HomePage.css';
+import React, { useState, useEffect } from 'react';
+import SeatSelector from './SeatSelector.jsx';
+
 
 const HomePage = () => {
     const [departureDate, setDepartureDate] = useState('');
@@ -8,6 +10,9 @@ const HomePage = () => {
     const [destination, setDestination] = useState('');
     const [trips, setTrips] = useState([]);
     const [error, setError] = useState('');
+    const [showSeatSelector, setShowSeatSelector] = useState(false);
+    const [selectedTravelId, setSelectedTravelId] = useState(null);
+    const [bookedSeats, setBookedSeats] = useState([]);
 
     const cities = [
         { value: 'ADANA', label: 'Adana' }, { value: 'ADIYAMAN', label: 'Adıyaman' }, { value: 'AFYONKARAHISAR', label: 'Afyonkarahisar' }, { value: 'AGRI', label: 'Ağrı' },
@@ -30,6 +35,61 @@ const HomePage = () => {
         { value: 'TRABZON', label: 'Trabzon' }, { value: 'TUNCELI', label: 'Tunceli' }, { value: 'USAK', label: 'Uşak' }, { value: 'VAN', label: 'Van' },
         { value: 'YALOVA', label: 'Yalova' }, { value: 'YOZGAT', label: 'Yozgat' }, { value: 'ZONGULDAK', label: 'Zonguldak' }, { value: 'DUZCE', label: 'Düzce' }
     ];
+    const handleOpenSeatSelector = async (travelId) => {
+        try {
+
+            if (!travelId || travelId === 'undefined') {
+                console.error("Geçersiz travelId:", travelId);
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error("Token bulunamadı. Kullanıcı giriş yapmamış olabilir.");
+                // Anasayfaya yönlendir
+                window.location.href = 'http://localhost:5173/';
+                return;
+            }
+
+            const response = await fetch(`http://localhost:8081/api/ticket/booked-seats?travelId=${travelId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Bilet verisi alınamadı: ${errorText}`);
+            }
+
+            const data = await response.json();
+            setSelectedTravelId(travelId);
+            setBookedSeats(data);
+            setShowSeatSelector(true);
+        } catch (err) {
+            console.error("handleOpenSeatSelector hatası:", err);
+        }
+    };
+
+    useEffect(() => {
+        const handleUnload = () => {
+            localStorage.removeItem('token');
+        };
+
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, []);
+
+
+
+    const handleCloseSeatSelector = () => {
+        setShowSeatSelector(false);
+        setSelectedTravelId(null);
+        setBookedSeats([]);
+    };
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -53,6 +113,12 @@ const HomePage = () => {
             });
 
             const token = localStorage.getItem('token');
+            if (!token) {
+                console.error("Token bulunamadı. Kullanıcı giriş yapmamış olabilir.");
+                window.location.href = 'http://localhost:5173/';
+                alert('Lütfen Giriş Yapınız');
+                return;
+            }
 
             const response = await fetch(`http://localhost:8081/api/travel/GetTravelWithCompanyDto?${searchParams}`, {
                 method: 'GET',
@@ -151,32 +217,74 @@ const HomePage = () => {
 
                 <div className="trip-list">
                     {trips.length > 0 ? (
-                        trips.map((trip, index) => (
-                            <div key={index} className="trip-item">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                    <div style={{ textAlign: 'center', flex: 1 }}>
-                                        <p><strong>{trip.fromCity}</strong></p>
-                                        <p>{formatDateTime(trip.departureTime)}</p>
+                        trips.map((trip, index) => {
+                            console.log("trip:", trip); // 🔍 id kontrolü için
+
+                            return (
+                                <div key={index} className="trip-item" style={{ position: 'relative', marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '10px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        {/* Nereden */}
+                                        <div style={{ textAlign: 'center', flex: 1 }}>
+                                            <p><strong>{trip.fromCity}</strong></p>
+                                            <p>{formatDateTime(trip.departureTime)}</p>
+                                        </div>
+
+                                        {/* Orta kısım */}
+                                        <div style={{ textAlign: 'center', flex: 1 }}>
+                                            <p style={{ margin: '10px 0' }}>
+                                                <span style={{ fontSize: '24px' }}>→</span>
+                                            </p>
+                                            <p>Fiyat: {trip.price} TL</p>
+                                            <p>Firma: {trip.companyName}</p>
+                                            <p>Ulaşım Tipi: {trip.companyType === 'BUS' ? 'Otobüs' : trip.companyType}</p>
+                                        </div>
+
+                                        {/* Nereye */}
+                                        <div style={{ textAlign: 'center', flex: 1 }}>
+                                            <p><strong>{trip.toCity}</strong></p>
+                                            <p>{formatDateTime(trip.arrivalTime)}</p>
+                                        </div>
                                     </div>
-                                    <div style={{ textAlign: 'center', flex: 1 }}>
-                                        <p style={{ margin: '10px 0' }}>
-                                            <span style={{ fontSize: '24px' }}>→</span>
+
+                                    {/* Bilet Seç Butonu */}
+                                    {trip.id ? (
+                                        <button
+                                            onClick={() => handleOpenSeatSelector(trip.id)}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '10px',
+                                                right: '10px',
+                                                padding: '6px 12px',
+                                                backgroundColor: '#007bff',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            Bilet Seç
+                                        </button>
+                                    ) : (
+                                        <p style={{ color: 'red', position: 'absolute', bottom: '10px', right: '10px' }}>
+                                            Trip ID eksik
                                         </p>
-                                        <p>Fiyat: {trip.price} TL</p>
-                                        <p>Firma: {trip.companyName}</p>
-                                        <p>Ulaşım Tipi: {trip.companyType === 'BUS' ? 'Otobüs' : trip.companyType}</p>
-                                    </div>
-                                    <div style={{ textAlign: 'center', flex: 1 }}>
-                                        <p><strong>{trip.toCity}</strong></p>
-                                        <p>{formatDateTime(trip.arrivalTime)}</p>
-                                    </div>
+                                    )}
                                 </div>
-                            </div>
-                        ))
+                            );
+                        })
                     ) : (
                         !error && <p></p>
                     )}
                 </div>
+
+
+                {/* Koltuk seçim modalı */}
+                {showSeatSelector && (
+                    <SeatSelector
+                        bookedSeats={bookedSeats}
+                        onClose={handleCloseSeatSelector}
+                    />
+                )}
             </div>
         </>
     );

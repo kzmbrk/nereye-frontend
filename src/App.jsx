@@ -10,7 +10,6 @@ import Seat from './pages/Seat';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Navbar from './components/Navbar';
-import Idontknow from './pages/Idontknow';
 const App = () => {
   return (
     <Router>
@@ -25,9 +24,6 @@ const App = () => {
         <Route path="/seat" element={<Seat />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/cards" element={<Idontknow />} />
-
-
       </Routes>
     </Router>
   );
