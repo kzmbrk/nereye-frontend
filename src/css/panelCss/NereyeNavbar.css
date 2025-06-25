@@ -1,0 +1,41 @@
+.nereye-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background-color: var(--color-botticelli-500);
+    /* #2193b0 */
+    padding: 20px 10px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.nereye-navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nereye-navbar li a {
+    color: var(--color-botticelli-50);
+    /* #f3f8fc, açık ton */
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+
+.nereye-navbar li a:hover,
+.nereye-navbar li a.active {
+    background-color: var(--color-botticelli-600);
+    /* #1b7a91, koyu mavi */
+}

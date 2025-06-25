@@ -8,12 +8,20 @@ import CompanyWelcomePage from './pages/CompanyWelcomePage';
 import CompanyCreate from './pages/CompanyCreate';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import Navbar from './components/Navbar';
 import DebitCardsPage from './pages/DebitCardsPage';
+import Navbar from './components/Navbar';
+
+import NereyeAuth from './pages/panel/NereyeAuth';
+import Dashboard from './pages/panel/Dashboard';
+import NereyeCompany from './pages/panel/NereyeCompany';
+import NereyeBlacklist from './pages/panel/NereyeBlacklist';
+import NereyeUsers from './pages/panel/NereyeUsers';
+import PanelWrapper from './pages/panel/PanelWrapper';
+import NereyeNavbar from './pages/panel/NereyeNavbar';
+
 const App = () => {
   return (
     <Router>
-      <Navbar />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
@@ -25,6 +33,15 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/cards" element={<DebitCardsPage />} />
 
+
+        <Route path="/auth" element={<NereyeAuth />} />
+        <Route path="/panel" element={<PanelWrapper />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="company" element={<NereyeCompany />} />
+          <Route path="blacklist" element={<NereyeBlacklist />} />
+          <Route path="users" element={<NereyeUsers />} />
+        </Route>
       </Routes>
     </Router>
   );
