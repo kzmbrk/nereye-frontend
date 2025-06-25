@@ -13,6 +13,8 @@ const HomePage = () => {
     const [showSeatSelector, setShowSeatSelector] = useState(false);
     const [selectedTravelId, setSelectedTravelId] = useState(null);
     const [bookedSeats, setBookedSeats] = useState([]);
+    const [selectedTravel, setSelectedTravel] = useState(null);
+
 
     const cities = [
         { value: 'ADANA', label: 'Adana' }, { value: 'ADIYAMAN', label: 'Adıyaman' }, { value: 'AFYONKARAHISAR', label: 'Afyonkarahisar' }, { value: 'AGRI', label: 'Ağrı' },
@@ -37,7 +39,6 @@ const HomePage = () => {
     ];
     const handleOpenSeatSelector = async (travelId) => {
         try {
-
             if (!travelId || travelId === 'undefined') {
                 console.error("Geçersiz travelId:", travelId);
                 return;
@@ -46,7 +47,6 @@ const HomePage = () => {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error("Token bulunamadı. Kullanıcı giriş yapmamış olabilir.");
-                // Anasayfaya yönlendir
                 window.location.href = 'http://localhost:5173/';
                 return;
             }
@@ -63,13 +63,22 @@ const HomePage = () => {
             }
 
             const data = await response.json();
+
+            const selected = trips.find(t => t.id === travelId);
+            if (!selected) {
+                console.error("Seçilen seyahat bulunamadı");
+                return;
+            }
+
             setSelectedTravelId(travelId);
+            setSelectedTravel(selected); // 🌞 Güneş bilgisi için eklendi
             setBookedSeats(data);
             setShowSeatSelector(true);
         } catch (err) {
             console.error("handleOpenSeatSelector hatası:", err);
         }
     };
+
 
     useEffect(() => {
         const handleUnload = () => {
@@ -279,12 +288,16 @@ const HomePage = () => {
 
 
                 {/* Koltuk seçim modalı */}
-                {showSeatSelector && (
+                {showSeatSelector && selectedTravel && (
                     <SeatSelector
                         bookedSeats={bookedSeats}
                         onClose={handleCloseSeatSelector}
+                        fromCity={selectedTravel.fromCity}
+                        toCity={selectedTravel.toCity}
+                        departureTime={selectedTravel.departureTime}
                     />
                 )}
+
             </div>
         </>
     );
