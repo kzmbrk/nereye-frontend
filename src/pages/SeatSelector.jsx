@@ -85,8 +85,6 @@ const cityCoordinates = {
     "ZONGULDAK": { lat: 41.4564, lon: 31.7987 }
 };
 
-
-
 function getAzimuth(from, to) {
     const φ1 = (from.lat * Math.PI) / 180;
     const φ2 = (to.lat * Math.PI) / 180;
@@ -94,14 +92,13 @@ function getAzimuth(from, to) {
     const y = Math.sin(Δλ) * Math.cos(φ2);
     const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
     const θ = Math.atan2(y, x);
-    const bearing = (θ * 180) / Math.PI;
-    return (bearing + 360) % 360;
+    return (θ * 180 / Math.PI + 360) % 360;
 }
 
 function getSunSide(busAzimuth, sunAzimuth) {
-    const angleDiff = (sunAzimuth - busAzimuth + 360) % 360;
-    if (angleDiff >= 45 && angleDiff <= 135) return 'sağ';
-    if (angleDiff >= 225 && angleDiff <= 315) return 'sol';
+    const diff = (sunAzimuth - busAzimuth + 360) % 360;
+    if (diff >= 45 && diff <= 135) return 'sağ';
+    if (diff >= 225 && diff <= 315) return 'sol';
     return 'önden veya arkadan';
 }
 
@@ -116,57 +113,136 @@ const Seat = ({ seatNumber, isBooked }) => (
     </div>
 );
 
-const SeatSelector = ({ bookedSeats, onClose, fromCity, toCity, departureTime }) => {
+const SeatSelector = ({ bookedSeats, onClose, fromCity, toCity, departureTime, selectedTravel }) => {
     const [sunSideText, setSunSideText] = useState('');
+    const [selectedMatrix, setSelectedMatrix] = useState('BUSINESS');
 
     useEffect(() => {
         const from = cityCoordinates[fromCity];
         const to = cityCoordinates[toCity];
-
-        if (!from || !to || !departureTime) {
-            setSunSideText('');
-            return;
-        }
+        if (!from || !to || !departureTime) return;
 
         const busAzimuth = getAzimuth(from, to);
         const sun = SunCalc.getPosition(new Date(departureTime), from.lat, from.lon);
         const sunAzimuth = (sun.azimuth * 180) / Math.PI + 180;
-        const side = getSunSide(busAzimuth, sunAzimuth);
 
-        if (side === 'sol') {
-            setSunSideText('☀️ Bu seferde güneş çoğunlukla sol taraftan vuracaktır.');
-        } else if (side === 'sağ') {
-            setSunSideText('☀️ Bu seferde güneş çoğunlukla sağ taraftan vuracaktır.');
-        } else {
-            setSunSideText('☀️ Güneş bu seyahatte doğrudan önden ya da arkadan gelecektir.');
-        }
+        const side = getSunSide(busAzimuth, sunAzimuth);
+        if (side === 'sol') setSunSideText('☀️ Bu seferde güneş çoğunlukla sol taraftan vuracaktır.');
+        else if (side === 'sağ') setSunSideText('☀️ Bu seferde güneş çoğunlukla sağ taraftan vuracaktır.');
+        else setSunSideText('☀️ Güneş bu seyahatte doğrudan önden ya da arkadan gelecektir.');
     }, [fromCity, toCity, departureTime]);
 
-    const matrix = [
+    const busMatrix = [
         [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37],
         [null, null, null, null, null, null, null, null, null, null, null, null, 38],
         [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 39],
         [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 40]
     ];
-    const rotatedPlaneMatrix = [
-        ['5F', '6F', '7F', '8F', '9F', '10F', '11F', '12F', '13F', '14F'],
-        ['5E', '6E', '7E', '8E', '9E', '10E', '11E', '12E', '13E', '14E'],
-        ['5D', '6D', '7D', '8D', '9D', '10D', '11D', '12D', '13D', '14D'],
-        [null, null, null, null, null, null, null, null, null, null],
-        ['5C', '6C', '7C', '8C', '9C', '10C', '11C', '12C', '13C', '14C'],
-        ['5B', '6B', '7B', '8B', '9B', '10B', '11B', '12B', '13B', '14B'],
-        ['5A', '6A', '7A', '8A', '9A', '10A', '11A', '12A', '13A', '14A']
+
+    const businessPlaneMatrix = [
+        ['4', '8', '12', '16', '20', '24'],
+        ['3', '7', '11', '15', '19', '23'],
+        [null, null, null, null, null, null],
+        ['2', '6', '10', '14', '18', '22'],
+        ['1', '5', '9', '13', '17', '21']
     ];
 
+    const economyFlexPlaneMatrix = [
+        ['90', '96', '102', '108', '114'],
+        ['89', '95', '101', '107', '113'],
+        ['88', '94', '100', '106', '112'],
+        [null, null, null, null, null],
+        ['87', '93', '99', '105', '111'],
+        ['86', '92', '98', '104', '110'],
+        ['85', '91', '97', '103', '109']
+    ];
 
+    const economyPlaneMatrix = [
+        ['30', '36', '42', '48', '54', '60', '66', '72', '78', '84'],
+        ['29', '35', '41', '47', '53', '59', '65', '71', '77', '83'],
+        ['28', '34', '40', '46', '52', '58', '64', '70', '76', '82'],
+        [null, null, null, null, null, null, null, null, null, null],
+        ['27', '33', '39', '45', '51', '57', '63', '69', '75', '81'],
+        ['26', '32', '38', '44', '50', '56', '62', '68', '74', '80'],
+        ['25', '31', '37', '43', '49', '55', '61', '67', '73', '79']
+    ];
 
+    const trainMatrix2 = [
+        ['28', '32', '36', '40', '44', '48'],
+        ['27', '31', '35', '39', '43', '47'],
+        [null, null, null, null, null, null],
+        ['26', '30', '34', '38', '42', '46'],
+        ['25', '29', '33', '37', '41', '45']
+    ];
+
+    const trainMatrix3 = [
+        ['52', '56', '60', '64', '68', '72'],
+        ['51', '55', '59', '63', '67', '71'],
+        [null, null, null, null, null, null],
+        ['50', '54', '58', '62', '66', '70'],
+        ['49', '53', '57', '61', '65', '69']
+    ];
+
+    const getActiveMatrix = () => {
+        if (!selectedTravel || !selectedTravel.vehicles) return [];
+
+        const type = selectedTravel.vehicles.type;
+        if (type === 'BUS') return busMatrix;
+        if (type === 'AIRLINE') {
+            if (selectedMatrix === 'ECONOMY') return economyPlaneMatrix;
+            if (selectedMatrix === 'ECONOMY_FLEX') return economyFlexPlaneMatrix;
+            return businessPlaneMatrix;
+        }
+        if (type === 'TRAIN') {
+            return selectedMatrix === 'VAGON3' ? trainMatrix3 : trainMatrix2;
+        }
+
+        return [];
+    };
+
+    const renderComboBox = () => {
+        if (!selectedTravel || !selectedTravel.vehicles) return null;
+
+        const type = selectedTravel.vehicles.type;
+        if (type === 'AIRLINE') {
+            return (
+                <div>
+                    <select className='custom-select' onChange={(e) => setSelectedMatrix(e.target.value)} value={selectedMatrix}>
+                        <option value="BUSINESS">Business</option>
+                        <option value="ECONOMY">Economy</option>
+                        <option value="ECONOMY_FLEX">Economy Flex</option>
+                    </select>
+                </div>
+
+            );
+        }
+        if (type === 'TRAIN') {
+            return (
+                <div>
+                    <select className='custom-select' onChange={(e) => setSelectedMatrix(e.target.value)} value={selectedMatrix}>
+                        <option value="VAGON2">2. Vagon</option>
+                        <option value="VAGON3">3. Vagon</option>
+                    </select>
+                </div>
+
+            );
+        }
+        return null;
+    };
+
+    const activeMatrix = getActiveMatrix();
 
     return (
         <div className="seat-selector-container">
             <button className="seat-selector-close-btn" onClick={onClose}>Kapat</button>
             <h3 className="seat-selector-title">Koltuk Seçimi</h3>
+
+            {renderComboBox() && (
+                <div style={{ marginBottom: '15px' }}>{renderComboBox()}</div>
+            )}
+
             <div className="seat-matrix">
-                {rotatedPlaneMatrix.map((row, rowIndex) => (
+                {activeMatrix.map((row, rowIndex) => (
                     <div key={rowIndex} className="seat-row">
                         {row.map((seatNumber, colIndex) =>
                             seatNumber ? (
@@ -180,25 +256,20 @@ const SeatSelector = ({ bookedSeats, onClose, fromCity, toCity, departureTime })
                             )
                         )}
                     </div>
-
                 ))}
             </div>
-            <div>
-                {/* ☀️ Güneş bilgisi */}
-                {sunSideText && (
-                    <div className="sun-info" style={{
-                        marginTop: '20px',
-                        marginBottom: '15px',
-                        fontSize: '15px',
-                        fontStyle: 'italic',
-                        color: '#555',
-                        textAlign: 'center'
-                    }}>
-                        {sunSideText}
 
-                    </div>
-                )}
-            </div>
+            {sunSideText && (
+                <div className="sun-info" style={{
+                    marginTop: '20px',
+                    fontSize: '15px',
+                    fontStyle: 'italic',
+                    color: '#555',
+                    textAlign: 'center'
+                }}>
+                    {sunSideText}
+                </div>
+            )}
         </div>
     );
 };

@@ -130,3 +130,45 @@
     margin: 4px;
     background: transparent;
 }
+
+.custom-select {
+    appearance: none;
+    /* Default arrow kaldır */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 8px 36px 8px 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #007bff;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    transition: border-color 0.3s ease;
+    min-width: 150px;
+}
+
+.custom-select:hover,
+.custom-select:focus {
+    border-color: #0056b3;
+}
+
+/* Custom ok işareti için */
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select-wrapper::after {
+    content: '▼';
+    font-size: 12px;
+    color: #007bff;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    pointer-events: none;
+    transform: translateY(-50%);
+}

@@ -71,7 +71,7 @@ const HomePage = () => {
             }
 
             setSelectedTravelId(travelId);
-            setSelectedTravel(selected); // 🌞 Güneş bilgisi için eklendi
+            setSelectedTravel(selected);
             setBookedSeats(data);
             setShowSeatSelector(true);
         } catch (err) {
@@ -295,6 +295,7 @@ const HomePage = () => {
                         fromCity={selectedTravel.fromCity}
                         toCity={selectedTravel.toCity}
                         departureTime={selectedTravel.departureTime}
+                        selectedTravel={selectedTravel}
                     />
                 )}
 
