@@ -1,0 +1,91 @@
+.myContainer {
+    margin-top: 6500px;
+}
+
+.company-container {
+    background-color: var(--color-botticelli-50);
+    border-left: 8px solid var(--color-botticelli-500);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 20px rgba(33, 147, 176, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: default;
+}
+
+.company-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(33, 147, 176, 0.3);
+}
+
+.company-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px 24px;
+    font-size: 16px;
+    color: var(--color-botticelli-900);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.company-info strong {
+    font-weight: 700;
+    color: var(--color-botticelli-700);
+}
+
+.blacklist-button {
+    background: linear-gradient(135deg, var(--color-botticelli-600), var(--color-botticelli-700));
+    color: #fff;
+    padding: 10px 20px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(27, 122, 145, 0.4);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+}
+
+.blacklist-button:hover {
+    background: linear-gradient(135deg, var(--color-botticelli-700), var(--color-botticelli-800));
+    box-shadow: 0 6px 14px rgba(20, 98, 115, 0.6);
+}
+
+.blacklist-textarea {
+    margin-top: 14px;
+    width: 100%;
+    height: 90px;
+    border: 1.5px solid var(--color-botticelli-300);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    color: var(--color-botticelli-900);
+}
+
+.blacklist-textarea:focus {
+    outline: none;
+    border-color: var(--color-botticelli-500);
+    box-shadow: 0 0 8px var(--color-botticelli-400);
+}
+
+.confirm-button {
+    background: linear-gradient(135deg, #d9534f, #c9302c);
+    color: white;
+    padding: 10px 22px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.5);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+}
+
+.confirm-button:hover {
+    background: linear-gradient(135deg, #c9302c, #b12a26);
+    box-shadow: 0 6px 16px rgba(185, 46, 38, 0.7);
+}
