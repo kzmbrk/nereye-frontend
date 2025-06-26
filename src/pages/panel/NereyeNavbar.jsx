@@ -10,6 +10,8 @@ const NereyeNavbar = () => {
         { name: 'Şirketler', path: '/panel/company' },
         { name: 'Kara Liste', path: '/panel/blacklist' },
         { name: 'Kullanıcılar', path: '/panel/users' },
+        { name: 'Onay Bekleyen Seyahatler', path: '/panel/travel' },
+
     ];
 
     return (

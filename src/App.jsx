@@ -18,6 +18,7 @@ import NereyeBlacklist from './pages/panel/NereyeBlacklist';
 import NereyeUsers from './pages/panel/NereyeUsers';
 import PanelWrapper from './pages/panel/PanelWrapper';
 import NereyeNavbar from './pages/panel/NereyeNavbar';
+import OnayBekleyenSeyahatler from './pages/panel/OnayBekleyenSeyahatler';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="company" element={<NereyeCompany />} />
           <Route path="blacklist" element={<NereyeBlacklist />} />
           <Route path="users" element={<NereyeUsers />} />
+          <Route path="travel" element={<OnayBekleyenSeyahatler />} />
         </Route>
       </Routes>
     </Router>
