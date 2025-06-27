@@ -43,6 +43,7 @@ const LoginPage = () => {
 
             const data = await response.json();
             localStorage.setItem('token', data.token);
+            localStorage.setItem('email', email);
             alert('Giriş başarılı!');
             window.location.href = 'http://localhost:5173/home';
         } catch (err) {
