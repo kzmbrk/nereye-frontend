@@ -1,0 +1,59 @@
+.vehicle-create-container {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-create-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.vehicle-create-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444;
+}
+
+.vehicle-create-container input,
+.vehicle-create-container select,
+.vehicle-create-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.vehicle-create-container textarea {
+    resize: vertical;
+}
+
+.vehicle-create-container button {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.vehicle-create-container button:hover {
+    background-color: #0056b3;
+}
+
+.vehicle-create-container p {
+    text-align: center;
+    font-weight: bold;
+    color: #28a745;
+}

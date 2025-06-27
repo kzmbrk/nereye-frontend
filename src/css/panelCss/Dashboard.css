@@ -1,0 +1,37 @@
+.dashboard-container {
+    padding: 20px;
+    width: 100%;
+    margin-left: 220px;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.dashboard-card {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 220px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dashboard-actions button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #1976d2;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.dashboard-actions button:hover {
+    background-color: #0d47a1;
+}

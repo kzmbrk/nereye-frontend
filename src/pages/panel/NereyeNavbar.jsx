@@ -11,7 +11,6 @@ const NereyeNavbar = () => {
         { name: 'Kara Liste', path: '/panel/blacklist' },
         { name: 'Kullanıcılar', path: '/panel/users' },
         { name: 'Onay Bekleyen Seyahatler', path: '/panel/travel' },
-        { name: 'Kuponlar', path: '/panel/discount' },
 
 
     ];

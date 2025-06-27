@@ -1,0 +1,37 @@
+.travel-list-container {
+    margin-left: 220px;
+    padding: 20px;
+    width: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 1100px;
+}
+
+.travel-card {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+}
+
+.travel-card:hover {
+    transform: scale(1.01);
+    background-color: #ffffff;
+}
+
+.travel-card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.travel-card p {
+    margin: 5px 0;
+    color: #333;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
