@@ -12,18 +12,12 @@ const getCardLogo = (cardNumber) => {
     if (!cardNumber) return null;
     const firstDigit = cardNumber.trim()[0];
     switch (firstDigit) {
-        case '3':
-            return amexLogo;
-        case '4':
-            return visaLogo;
-        case '5':
-            return mastercardLogo;
-        case '6':
-            return maestroLogo;
-        case '9':
-            return troyLogo;
-        default:
-            return null;
+        case '3': return amexLogo;
+        case '4': return visaLogo;
+        case '5': return mastercardLogo;
+        case '6': return maestroLogo;
+        case '9': return troyLogo;
+        default: return null;
     }
 };
 
@@ -31,18 +25,24 @@ const DebitCardsPage = () => {
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showForm, setShowForm] = useState(false);
+    const [cardNumber, setCardNumber] = useState('');
+    const [description, setDescription] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
 
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         const fetchCards = async () => {
+            if (!userId || !token) {
+                setError('Giriş yapılmamış.');
+                setLoading(false);
+                return;
+            }
+
             try {
-                if (!token) {
-                    setError('Giriş yapılmamış.');
-                    setLoading(false);
-                    return;
-                }
-                const response = await fetch('http://localhost:8081/api/debitCards/1', {
+                const response = await fetch(`http://localhost:8081/api/debitCards/${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -56,8 +56,9 @@ const DebitCardsPage = () => {
                 setLoading(false);
             }
         };
+
         fetchCards();
-    }, [token]);
+    }, [userId, token]);
 
     const handleDelete = async (id) => {
         if (!window.confirm('Bu kartı silmek istediğinize emin misiniz?')) return;
@@ -74,8 +75,44 @@ const DebitCardsPage = () => {
 
             if (!response.ok) throw new Error('Kart silinemedi.');
 
-            // Başarılı silmeden sonra state güncelle
-            setCards(prevCards => prevCards.filter(card => card.id !== id));
+            setCards(prev => prev.filter(card => card.id !== id));
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    const handleAddCard = async (e) => {
+        e.preventDefault();
+
+        const newCard = {
+            cardNumber,
+            description,
+            expiryDate,
+            appUsers: {
+                id: userId
+            }
+        };
+
+        try {
+            const response = await fetch('http://localhost:8081/api/debitCards/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newCard)
+            });
+
+            if (!response.ok) throw new Error('Kart kaydedilemedi.');
+
+            const savedCard = await response.json();
+            setCards(prev => [...prev, savedCard]);
+
+            // Temizle ve formu kapat
+            setCardNumber('');
+            setDescription('');
+            setExpiryDate('');
+            setShowForm(false);
         } catch (err) {
             alert(err.message);
         }
@@ -83,28 +120,63 @@ const DebitCardsPage = () => {
 
     if (loading) return <p>Yükleniyor...</p>;
     if (error) return <p style={{ color: 'red' }}>Hata: {error}</p>;
+
     return (
         <div className="cards-container">
-            {cards.map(card => {
-                const logo = getCardLogo(card.cardNumber);
-                return (
-                    <div key={card.id} className="card-row">
-                        <div className="card-wrapper">
-                            <img src={cardBg} alt="Card Background" className="card-bg" />
-                            {logo && <img src={logo} alt="Card Logo" className="card-logo" />}
-                            <div className="card-description">{card.description}</div>
-                            <div className="card-number">{card.cardNumber}</div>
-                            <div className="card-expiry">Son Kullanma Tarihi: {card.expiryDate}</div>
+            <h2>Kartlarım</h2>
+            <button onClick={() => setShowForm(!showForm)}>
+                {showForm ? 'Formu Kapat' : 'Kart Ekle'}
+            </button>
+
+            {showForm && (
+                <form className="add-card-form" onSubmit={handleAddCard}>
+                    <input
+                        type="text"
+                        placeholder="Kart Numarası"
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="text"
+                        placeholder="Açıklama"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="month"
+                        placeholder="Son Kullanma Tarihi"
+                        value={expiryDate}
+                        onChange={(e) => setExpiryDate(e.target.value)}
+                        required
+                    />
+                    <button type="submit">Kaydet</button>
+                </form>
+            )}
+
+            <div className="card-list">
+                {cards.map(card => {
+                    const logo = getCardLogo(card.cardNumber);
+                    return (
+                        <div key={card.id} className="card-row">
+                            <div className="card-wrapper">
+                                <img src={cardBg} alt="Card Background" className="card-bg" />
+                                {logo && <img src={logo} alt="Card Logo" className="card-logo" />}
+                                <div className="card-description">{card.description}</div>
+                                <div className="card-number">{card.cardNumber}</div>
+                                <div className="card-expiry">Son Kullanma Tarihi: {card.expiryDate}</div>
+                            </div>
+                            <button
+                                className="delete-button"
+                                onClick={() => handleDelete(card.id)}
+                            >
+                                Kartı Sil
+                            </button>
                         </div>
-                        <button
-                            className="delete-button"
-                            onClick={() => handleDelete(card.id)}
-                        >
-                            Kartı Sil
-                        </button>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
         </div>
     );
 };

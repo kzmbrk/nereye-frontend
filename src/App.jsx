@@ -1,5 +1,6 @@
+// App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import TravelPage from './pages/TravelPage';
@@ -17,24 +18,29 @@ import NereyeCompany from './pages/panel/NereyeCompany';
 import NereyeBlacklist from './pages/panel/NereyeBlacklist';
 import NereyeUsers from './pages/panel/NereyeUsers';
 import PanelWrapper from './pages/panel/PanelWrapper';
-import NereyeNavbar from './pages/panel/NereyeNavbar';
 import OnayBekleyenSeyahatler from './pages/panel/OnayBekleyenSeyahatler';
 import Discount from './pages/panel/Discount';
 
 const App = () => {
+  const location = useLocation();
+
+  const showNavbarPaths = ['/', '/home', '/cards', '/travel'];
+  const showNavbar = showNavbarPaths.includes(location.pathname);
+
   return (
-    <Router>
+    <>
+      {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/cards" element={<DebitCardsPage />} />
         <Route path="/travel" element={<TravelPage />} />
+
         <Route path="/company" element={<CompanyPage />} />
         <Route path="/companyWelcome" element={<CompanyWelcomePage />} />
         <Route path="/company-create" element={<CompanyCreate />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/cards" element={<DebitCardsPage />} />
-
 
         <Route path="/auth" element={<NereyeAuth />} />
         <Route path="/panel" element={<PanelWrapper />}>
@@ -45,10 +51,9 @@ const App = () => {
           <Route path="users" element={<NereyeUsers />} />
           <Route path="travel" element={<OnayBekleyenSeyahatler />} />
           <Route path="discount" element={<Discount />} />
-
         </Route>
       </Routes>
-    </Router>
+    </>
   );
 };
 

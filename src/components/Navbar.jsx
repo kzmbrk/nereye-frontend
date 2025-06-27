@@ -30,12 +30,11 @@ const Navbar = () => {
                 ☰
             </div>
             <ul className={`menu ${menuOpen ? 'active' : ''}`}>
-                <li><Link to="/" onClick={toggleMenu}>Anasayfa</Link></li>
-                <li><Link to="/travel" onClick={toggleMenu}>Seyahat</Link></li>
+                <li><Link to="/travel" onClick={toggleMenu}>Seyahatlerim</Link></li>
                 <li><Link to="/home" onClick={toggleMenu}>Seyahat Ara</Link></li>
-                <li><Link to="/company" onClick={toggleMenu}>Şirket</Link></li>
-                <li><Link to="/travels" onClick={toggleMenu}>Seyahatlerim</Link></li>
                 <li><Link to="/cards" onClick={toggleMenu}>Kartlarım</Link></li>
+                <li><Link to="/" onClick={toggleMenu}>Çıkış Yap</Link></li>
+
             </ul>
         </nav>
     );
