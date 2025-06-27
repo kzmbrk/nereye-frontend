@@ -20,11 +20,14 @@ import NereyeUsers from './pages/panel/NereyeUsers';
 import PanelWrapper from './pages/panel/PanelWrapper';
 import OnayBekleyenSeyahatler from './pages/panel/OnayBekleyenSeyahatler';
 import Discount from './pages/panel/Discount';
+import CompanyTravels from './pages/CompanyTravels';
+import CompanyVehicles from './pages/CompanyVehicles';
+import CompanyVehiclesCreate from './pages/companyVehiclesCreate';
 
 const App = () => {
   const location = useLocation();
 
-  const showNavbarPaths = ['/', '/home', '/cards', '/travel'];
+  const showNavbarPaths = ['/home', '/cards', '/travel'];
   const showNavbar = showNavbarPaths.includes(location.pathname);
 
   return (
@@ -37,7 +40,13 @@ const App = () => {
         <Route path="/travel" element={<TravelPage />} />
 
         <Route path="/company" element={<CompanyPage />} />
+
         <Route path="/companyWelcome" element={<CompanyWelcomePage />} />
+        <Route path="/companyTravels" element={<CompanyTravels />} />
+        <Route path="/companyVehicles" element={<CompanyVehicles />} />
+        <Route path="/companyVehiclesCreate" element={<CompanyVehiclesCreate />} />
+
+
         <Route path="/company-create" element={<CompanyCreate />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

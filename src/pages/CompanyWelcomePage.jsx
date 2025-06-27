@@ -3,6 +3,8 @@ import { useLocation, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import '../css/CompanyWelcomePage.css';
+import CompanyNavbar from './CompanyNavbar';
+
 
 function CompanyWelcomePage() {
     const location = useLocation();
@@ -86,7 +88,7 @@ function CompanyWelcomePage() {
     return (
         <div className="company-welcome-container">
             <header className="header">
-                <Link style={{ color: 'white' }} to="/">
+                <Link style={{ color: 'white', textDecoration: 'none' }} to="/">
                     <h1>Nereye</h1>
                 </Link>
             </header>
@@ -154,8 +156,16 @@ function CompanyWelcomePage() {
             <button className="createTravel-btn" >Seyahatleri Görüntüle / Düzenle</button>
             <div>
             </div>
+            <div style={{ display: 'flex' }}>
+                <CompanyNavbar />
+                <div style={{ marginLeft: '220px', padding: '20px', width: '100%' }}>
+                    <h1>Şirket Ana Sayfası</h1>
+                    {/* Diğer içerikler */}
+                </div>
+            </div>
 
         </div>
+
     );
 }
 

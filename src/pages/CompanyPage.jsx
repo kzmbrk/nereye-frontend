@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/CompanyPage.css';
 
+
 function CompanyPage() {
     const [showInputs, setShowInputs] = useState(false);
     const [companyName, setCompanyName] = useState('');
@@ -16,6 +17,7 @@ function CompanyPage() {
             const response = await axios.get(`http://localhost:8081/api/company/getCompany/${companyId}`);
 
             if (response.data.name.toLowerCase() === companyName.toLowerCase()) {
+                localStorage.setItem('companyId', companyId);
                 navigate('/companyWelcome', { state: { company: response.data } });
             } else {
                 setError('Şirket adı ve ID eşleşmiyor.');
@@ -30,7 +32,7 @@ function CompanyPage() {
     return (
         <div>
             <header className="header">
-                <Link style={{ color: 'white' }} to="/" >
+                <Link style={{ color: 'white', textDecoration: 'none' }} to="/" >
                     <h2>Nereye</h2>
                 </Link>
             </header>

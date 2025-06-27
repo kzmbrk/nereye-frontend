@@ -16,7 +16,7 @@ function ForgotPassword() {
             await axios.post(`http://localhost:8081/forgot-password?email=${encodeURIComponent(email)}`);
             setMessage(response.data.message || 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.');
         } catch (err) {
-            setError(err.response?.data?.message || 'Bir hata oluştu.');
+            setError(err.response?.data?.message);
         }
     };
 
